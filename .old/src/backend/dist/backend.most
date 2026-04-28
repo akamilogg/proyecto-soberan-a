@@ -1,0 +1,94 @@
+// Version: 1.0.0
+type ArtifactId__147418687 = ArtifactId__541771598;
+type ArtifactId__541771598 = Text;
+type ArtifactType__166343828 = {#Config; #Dataset; #Kernel; #ModelWeights};
+type Artifact__329672717 =
+  {
+    artifactType : ArtifactType__166343828;
+    cid : Text;
+    contentHash : Text;
+    id : ArtifactId__147418687;
+    timestamp : Timestamp__877518185;
+    uploadedBy : Principal;
+    verified : Bool
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type EggrollParams__537406104 =
+  {alpha : Float; epochs : Nat; nPopulation : Nat; r : Nat};
+type GenerationResult__625649468 =
+  {
+    averageFitness : Float;
+    bestFitness : Float;
+    generation : Nat;
+    taskId : TaskId__465861407;
+    timestamp : Timestamp__877518185;
+    workerCount : Nat
+  };
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type TaskId__207642484 = Text;
+type TaskId__465861407 = TaskId__207642484;
+type TaskStatus__989797368 = {#Active; #Cancelled; #Completed; #Pending};
+type Task__832598127 =
+  {
+    createdAt : Timestamp__877518185;
+    createdBy : Principal;
+    currentGeneration : Nat;
+    datasetArtifactId : ArtifactId__147418687;
+    id : TaskId__465861407;
+    modelArtifactId : ArtifactId__147418687;
+    params : EggrollParams__537406104;
+    status : TaskStatus__989797368;
+    totalGenerations : Nat;
+    updatedAt : Timestamp__877518185
+  };
+type Timestamp__301639476 = Nat64;
+type Timestamp__877518185 = Timestamp__301639476;
+type WorkerStatus__30157279 = {#Active; #Inactive; #Slashed};
+type WorkerSubmission__906616614 =
+  {
+    fitness : Float;
+    generation : Nat;
+    taskId : TaskId__465861407;
+    timestamp : Timestamp__877518185;
+    workerId : Principal
+  };
+type Worker__848804934 =
+  {
+    elo : Float;
+    id : Principal;
+    lastSubmission : ?Timestamp__877518185;
+    slashCount : Nat;
+    status : WorkerStatus__30157279;
+    totalSubmissions : Nat
+  };
+actor {
+  stable state :
+    {
+      artifacts : List__415060402<Artifact__329672717>;
+      currentGeneration : Nat;
+      generations :
+        Map__605269027<TaskId__465861407,
+                        List__415060402<GenerationResult__625649468>>;
+      submissions : List__415060402<WorkerSubmission__906616614>;
+      tasks : List__415060402<Task__832598127>;
+      workers : List__415060402<Worker__848804934>
+    }
+};

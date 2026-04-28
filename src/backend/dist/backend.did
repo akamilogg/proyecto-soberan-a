@@ -1,0 +1,117 @@
+type WorkerSubmission = 
+ record {
+   fitness: float64;
+   generation: nat;
+   taskId: TaskId;
+   timestamp: Timestamp;
+   workerId: principal;
+ };
+type WorkerStatus = 
+ variant {
+   Active;
+   Inactive;
+   Slashed;
+ };
+type Worker = 
+ record {
+   elo: float64;
+   id: principal;
+   lastSubmission: opt Timestamp;
+   slashCount: nat;
+   status: WorkerStatus;
+   totalSubmissions: nat;
+ };
+type Timestamp = nat64;
+type TaskStatus = 
+ variant {
+   Active;
+   Cancelled;
+   Completed;
+   Pending;
+ };
+type TaskId = text;
+type Task = 
+ record {
+   createdAt: Timestamp;
+   createdBy: principal;
+   currentGeneration: nat;
+   datasetArtifactId: ArtifactId;
+   id: TaskId;
+   modelArtifactId: ArtifactId;
+   params: EggrollParams;
+   status: TaskStatus;
+   totalGenerations: nat;
+   updatedAt: Timestamp;
+ };
+type ProtocolStats = 
+ record {
+   activeWorkers: nat;
+   completedTasks: nat;
+   currentGeneration: nat;
+   pendingTasks: nat;
+   totalWorkers: nat;
+ };
+type GenerationResult = 
+ record {
+   averageFitness: float64;
+   bestFitness: float64;
+   generation: nat;
+   taskId: TaskId;
+   timestamp: Timestamp;
+   workerCount: nat;
+ };
+type EggrollParams = 
+ record {
+   alpha: float64;
+   epochs: nat;
+   nPopulation: nat;
+   r: nat;
+ };
+type ArtifactType = 
+ variant {
+   Config;
+   Dataset;
+   Kernel;
+   ModelWeights;
+ };
+type ArtifactId = text;
+type Artifact = 
+ record {
+   artifactType: ArtifactType;
+   cid: text;
+   contentHash: text;
+   id: ArtifactId;
+   timestamp: Timestamp;
+   uploadedBy: principal;
+   verified: bool;
+ };
+service : {
+  createTask: (modelArtifactId: text, datasetArtifactId: text, params:
+   EggrollParams, totalGenerations: nat) -> (variant {
+                                               err: text;
+                                               ok: Task;
+                                             });
+  getArtifact: (id: text) -> (opt Artifact) query;
+  getArtifacts: () -> (vec Artifact) query;
+  getStats: () -> (ProtocolStats) query;
+  getTask: (id: text) -> (opt Task) query;
+  getTaskGenerations: (taskId: text) -> (vec GenerationResult) query;
+  getTaskSubmissions: (taskId: text) -> (vec WorkerSubmission) query;
+  getTasks: () -> (vec Task) query;
+  getWorker: (id: principal) -> (opt Worker) query;
+  getWorkers: () -> (vec Worker) query;
+  registerArtifact: (artifactType: ArtifactType, contentHash: text, cid:
+   text) -> (variant {
+               err: text;
+               ok: Artifact;
+             });
+  registerWorker: () -> (variant {
+                           err: text;
+                           ok: Worker;
+                         });
+  submitFitness: (taskId: text, generation: nat, fitness: float64) ->
+   (variant {
+      err: text;
+      ok;
+    });
+}

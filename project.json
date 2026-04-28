@@ -1,0 +1,24 @@
+{
+  "overview": "Proyecto Soberanía is a decentralized AI training protocol interface on the Internet Computer. It enables launching, monitoring, and managing fine-tuning tasks for large language models using the EGGROLL evolutionary optimization strategy — no centralized hardware required.",
+  "features": [
+    "Launch fine-tuning tasks with EGGROLL hyperparameters and artifact CID references",
+    "Live protocol dashboard showing generation number, active workers, and pending tasks",
+    "Task detail view with generation progress, worker ELO scores, and fitness metrics",
+    "Workers registry with reputation scores, status, and slashing history",
+    "Artifact explorer with on-chain hash verification for models and datasets",
+    "Internet Identity login",
+    "Retro console/terminal aesthetic with monospace fonts and CRT-style glow"
+  ],
+  "category": "ai-machine-learning",
+  "tags": [
+    "ai",
+    "icp",
+    "decentralized",
+    "fine-tuning",
+    "eggroll",
+    "evolutionary-optimization",
+    "protocol",
+    "terminal"
+  ],
+  "last_updated": "2026-04-26T21:18:56.856Z"
+}
